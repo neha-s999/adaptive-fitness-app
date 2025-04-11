@@ -3,6 +3,7 @@ import { Send, ArrowRight } from "lucide-react";
 import VoiceInput from "./VoiceInput";
 import { Message, EnergyLevel, WorkoutSuggestion } from "../types";
 import { WORKOUT_MODIFICATIONS, AI_RESPONSES } from "../constants/workoutPlans";
+import { INITIAL_MESSAGES } from "../constants/mockData";
 
 const TypingIndicator = () => (
   <div className="flex justify-start">
@@ -35,7 +36,8 @@ interface ChatProps {
   onNavigateToPlans?: () => void;
   onUpdateWorkout?: (
     suggestion: WorkoutSuggestion,
-    energyLevel: EnergyLevel
+    energyLevel: EnergyLevel,
+    navigateToPlans?: boolean
   ) => void;
   onInitialResponseComplete?: () => void;
 }
@@ -47,7 +49,7 @@ export default function Chat({
   onUpdateWorkout,
   onInitialResponseComplete,
 }: ChatProps) {
-  const [messages, setMessages] = useState<ExtendedMessage[]>(initialMessages);
+  const [messages, setMessages] = useState<ExtendedMessage[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [currentEnergyLevel, setCurrentEnergyLevel] =
@@ -56,6 +58,7 @@ export default function Chat({
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const isFirstMount = useRef(true);
 
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
@@ -72,8 +75,43 @@ export default function Chat({
 
   // Handle initial messages
   useEffect(() => {
-    setMessages(initialMessages);
-  }, [initialMessages]);
+    const showInitialMessages = async () => {
+      // If we have initialMessages, use them directly
+      if (initialMessages.length > 0) {
+        setMessages(initialMessages);
+        return;
+      }
+
+      // Only show welcome animation if this is first mount and we have no messages
+      if (!isFirstMount.current || messages.length > 0) {
+        return;
+      }
+
+      isFirstMount.current = false;
+
+      // Show welcome messages with typing animation
+      for (const message of INITIAL_MESSAGES) {
+        if (message.isAI) {
+          setIsTyping(true);
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+        setMessages((prev) => [...prev, message]);
+        if (message.isAI) {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          setIsTyping(false);
+        }
+      }
+    };
+
+    showInitialMessages();
+  }, [initialMessages, messages.length]);
+
+  // Cleanup typing indicator on unmount or tab switch
+  useEffect(() => {
+    return () => {
+      setIsTyping(false);
+    };
+  }, []);
 
   const updateMessages = (newMessages: ExtendedMessage[]) => {
     setMessages(newMessages);
@@ -164,7 +202,6 @@ export default function Chat({
       ...messages,
       { text: AI_RESPONSES.PLAN_UPDATED, isAI: true },
     ]);
-    onNavigateToPlans?.();
   };
 
   const addAIResponse = async (
@@ -174,6 +211,7 @@ export default function Chat({
     setIsTyping(true);
     // Show typing indicator for a natural delay
     await new Promise((resolve) => setTimeout(resolve, 2000));
+
     updateMessages(newMessages);
     setIsTyping(false);
 
@@ -191,6 +229,43 @@ export default function Chat({
     const userMessage = { text: inputMessage, isAI: false };
     updateMessages([...messages, userMessage]);
     setInputMessage("");
+
+    // Check if the input corresponds to selecting an option
+    const optionMatch = inputMessage.match(/option (\d+)/i);
+    if (optionMatch) {
+      const optionIndex = parseInt(optionMatch[1], 10) - 1;
+      const lastMessageWithSuggestions = messages
+        .slice()
+        .reverse()
+        .find((msg) => msg.suggestions);
+      if (
+        lastMessageWithSuggestions &&
+        lastMessageWithSuggestions.suggestions
+      ) {
+        const suggestions = lastMessageWithSuggestions.suggestions;
+        if (
+          optionIndex >= 0 &&
+          optionIndex < suggestions.length &&
+          currentEnergyLevel
+        ) {
+          const selectedSuggestion = suggestions[optionIndex];
+          onUpdateWorkout?.(selectedSuggestion, currentEnergyLevel, false);
+
+          setIsTyping(true);
+          setTimeout(() => {
+            setIsTyping(false);
+            updateMessages([
+              ...messages,
+              userMessage,
+              { text: `Selected: ${selectedSuggestion.title}`, isAI: false },
+              { text: AI_RESPONSES.PLAN_UPDATED, isAI: true },
+            ]);
+          }, 4000);
+
+          return;
+        }
+      }
+    }
 
     if (inputMessage.toLowerCase() === "sounds good") {
       addAIResponse(
@@ -313,6 +388,7 @@ export default function Chat({
                   if (currentEnergyLevel && onUpdateWorkout) {
                     onUpdateWorkout(suggestion, currentEnergyLevel);
                   }
+
                   updateMessages([
                     ...messages,
                     { text: `Selected: ${suggestion.title}`, isAI: false },

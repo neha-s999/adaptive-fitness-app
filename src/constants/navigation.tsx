@@ -1,5 +1,5 @@
 import React from "react";
-import { Activity, Smartphone, Dumbbell, Calendar } from "lucide-react";
+import { Activity, Smartphone, Calendar } from "lucide-react";
 import { Tab } from "../types";
 
 interface NavItem {
@@ -19,11 +19,7 @@ export const NAV_ITEMS: NavItem[] = [
     label: "Devices",
     icon: <Smartphone className="w-6 h-6" />,
   },
-  {
-    id: "train",
-    label: "Train",
-    icon: <Dumbbell className="w-6 h-6" />,
-  },
+
   {
     id: "plan",
     label: "Plan",

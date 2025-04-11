@@ -1,5 +1,11 @@
 export interface WorkoutDay {
+  id: string;
   date: string;
+  exercises: Array<{
+    name: string;
+    sets: number;
+    reps: number;
+  }>;
   type: string;
   title: string;
   duration: string;
@@ -10,10 +16,13 @@ export interface WorkoutDay {
   isAiModified?: boolean;
   originalPlan?: WorkoutDay;
   aiReasoning?: string;
+  description?: string;
 }
 
 export interface WorkoutSuggestion {
+  id: string;
   title: string;
+  description: string;
   type:
     | "Yoga"
     | "High Intensity"
@@ -23,6 +32,22 @@ export interface WorkoutSuggestion {
     | "Lower Body";
   duration: string;
   intensity: string;
-  description: string;
   thumbnail: string;
 }
+
+export interface Message {
+  text: string;
+  isAI: boolean;
+}
+
+export interface Device {
+  id: string;
+  name: string;
+  type: "watch" | "phone";
+  status: "connected" | "disconnected";
+  batteryLevel?: number;
+}
+
+export type Tab = "home" | "plan" | "devices";
+
+export type EnergyLevel = "low" | "medium" | "high";

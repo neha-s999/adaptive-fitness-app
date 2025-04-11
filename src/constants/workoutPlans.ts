@@ -56,6 +56,8 @@ export const WORKOUT_MODIFICATIONS: WorkoutModifications = {
         thumbnail: WORKOUT_TYPE_IMAGES["High Intensity"],
         calories: 400,
         videoUrl: "/videos/power-hiit-circuit",
+        id: "1",
+        exercises: [],
       },
       {
         date: new Date().toLocaleDateString("en-US", {
@@ -71,6 +73,8 @@ export const WORKOUT_MODIFICATIONS: WorkoutModifications = {
         thumbnail: WORKOUT_TYPE_IMAGES.Strength,
         calories: 450,
         videoUrl: "/videos/advanced-strength",
+        id: "2",
+        exercises: [],
       },
     ],
   },
@@ -96,6 +100,8 @@ export const WORKOUT_MODIFICATIONS: WorkoutModifications = {
         thumbnail: WORKOUT_TYPE_IMAGES.Mixed,
         calories: 300,
         videoUrl: "/videos/balanced-mix",
+        id: "3",
+        exercises: [],
       },
       {
         date: new Date().toLocaleDateString("en-US", {
@@ -111,6 +117,8 @@ export const WORKOUT_MODIFICATIONS: WorkoutModifications = {
         thumbnail: WORKOUT_TYPE_IMAGES.Cardio,
         calories: 280,
         videoUrl: "/videos/moderate-cardio",
+        id: "4",
+        exercises: [],
       },
     ],
   },
@@ -136,6 +144,8 @@ export const WORKOUT_MODIFICATIONS: WorkoutModifications = {
         thumbnail: WORKOUT_TYPE_IMAGES.Yoga,
         calories: 200,
         videoUrl: "/videos/yoga-vinyasa",
+        id: "5",
+        exercises: [],
       },
       {
         date: new Date().toLocaleDateString("en-US", {
@@ -152,6 +162,8 @@ export const WORKOUT_MODIFICATIONS: WorkoutModifications = {
         thumbnail: WORKOUT_TYPE_IMAGES["Lower Body"],
         calories: 180,
         videoUrl: "/videos/low-intensity-legs",
+        id: "6",
+        exercises: [],
       },
     ],
   },
@@ -204,6 +216,7 @@ export function modifyWorkout(
         .toLowerCase()
         .replace(/\s+/g, "-")}`,
       aiReasoning: `I've adapted your workout to ${selectedSuggestion.title}. ${modification.aiReasoning}`,
+      id: selectedSuggestion.id,
     };
   }
 
@@ -223,5 +236,7 @@ export function modifyWorkout(
     )} MIN`,
     calories: Math.round(workout.calories * modification.caloriesMultiplier),
     aiReasoning: modification.aiReasoning,
+    id: "7",
+    exercises: [],
   };
 }

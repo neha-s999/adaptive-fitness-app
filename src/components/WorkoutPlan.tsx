@@ -215,6 +215,32 @@ export default function WorkoutPlan({
             <WorkoutCard workout={currentWorkout} />
           </div>
 
+          {/* Exercise Details Section */}
+          <div className="mt-6 bg-neutral-900 rounded-xl p-4">
+            <h3 className="text-lg font-semibold mb-4">Workout Details</h3>
+            <div className="space-y-4">
+              {currentWorkout.exercises.map((exercise, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between py-3 border-b border-neutral-800 last:border-0"
+                >
+                  <div className="flex-1">
+                    <h4 className="font-medium text-white">{exercise.name}</h4>
+                    <p className="text-sm text-neutral-400">
+                      {exercise.sets} sets × {exercise.reps}{" "}
+                      {exercise.reps === 1 ? "rep" : "reps"}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="bg-neutral-800 px-3 py-1 rounded-full text-sm">
+                      Set {index + 1}/{currentWorkout.exercises.length}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {currentWorkout.isAiModified && currentWorkout.aiReasoning && (
             <div className="bg-neutral-800 rounded-xl p-4 text-sm text-neutral-300">
               <div className="flex items-center gap-2 mb-2">

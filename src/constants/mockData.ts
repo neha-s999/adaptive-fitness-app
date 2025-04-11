@@ -60,10 +60,11 @@ export const LOCAL_STORAGE_KEYS = {
   HAS_COMPLETED_ONBOARDING: "hasCompletedOnboarding",
 } as const;
 
-export const APP_TITLE = "Nike AI Training" as const;
+export const APP_TITLE = "Nike Smart Workouts" as const;
 
 export const initialWorkoutSchedule: WorkoutDay[] = [
   {
+    id: "workout-1",
     date: "Monday, Mar 18",
     type: "Cardio",
     title: "HIIT Endurance Run",
@@ -73,8 +74,15 @@ export const initialWorkoutSchedule: WorkoutDay[] = [
     videoUrl: "/videos/hiit-run",
     thumbnail:
       "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&q=80&w=800",
+    exercises: [
+      { name: "Warm-up Jog", sets: 1, reps: 1 },
+      { name: "Sprint Intervals", sets: 8, reps: 1 },
+      { name: "Recovery Jog", sets: 8, reps: 1 },
+      { name: "Cool-down Walk", sets: 1, reps: 1 },
+    ],
   },
   {
+    id: "workout-2",
     date: "Tuesday, Mar 19",
     type: "Upper Body",
     title: "Upper Body Power",
@@ -84,8 +92,16 @@ export const initialWorkoutSchedule: WorkoutDay[] = [
     videoUrl: "/videos/upper-body",
     thumbnail:
       "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&q=80&w=800",
+    exercises: [
+      { name: "Push-ups", sets: 3, reps: 15 },
+      { name: "Pull-ups", sets: 3, reps: 8 },
+      { name: "Dumbbell Shoulder Press", sets: 3, reps: 12 },
+      { name: "Tricep Dips", sets: 3, reps: 12 },
+      { name: "Bent-over Rows", sets: 3, reps: 12 },
+    ],
   },
   {
+    id: "workout-3",
     date: "Wednesday, Mar 20",
     type: "Lower Body",
     title: "Leg Day Strength",
@@ -95,5 +111,50 @@ export const initialWorkoutSchedule: WorkoutDay[] = [
     videoUrl: "/videos/leg-day",
     thumbnail:
       "https://images.unsplash.com/photo-1434608519344-49d77a699e1d?auto=format&fit=crop&q=80&w=800",
+    exercises: [
+      { name: "Barbell Squats", sets: 4, reps: 12 },
+      { name: "Romanian Deadlifts", sets: 3, reps: 10 },
+      { name: "Walking Lunges", sets: 3, reps: 20 },
+      { name: "Calf Raises", sets: 3, reps: 15 },
+      { name: "Leg Press", sets: 3, reps: 12 },
+    ],
+  },
+  {
+    id: "workout-4",
+    date: "Thursday, Mar 21",
+    type: "Core & Flexibility",
+    title: "Core Power Yoga",
+    duration: "40 MIN",
+    intensity: "Medium",
+    calories: 200,
+    videoUrl: "/videos/yoga",
+    thumbnail:
+      "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+    exercises: [
+      { name: "Sun Salutations", sets: 3, reps: 1 },
+      { name: "Plank Holds", sets: 3, reps: 1 },
+      { name: "Russian Twists", sets: 3, reps: 20 },
+      { name: "Bird Dogs", sets: 3, reps: 12 },
+      { name: "Yoga Flow Sequence", sets: 1, reps: 1 },
+    ],
+  },
+  {
+    id: "workout-5",
+    date: "Friday, Mar 22",
+    type: "Full Body",
+    title: "High-Intensity Circuit",
+    duration: "45 MIN",
+    intensity: "High",
+    calories: 450,
+    videoUrl: "/videos/hiit-circuit",
+    thumbnail:
+      "https://images.unsplash.com/photo-1517963879433-6ad2b056d712?auto=format&fit=crop&q=80&w=800",
+    exercises: [
+      { name: "Burpees", sets: 4, reps: 10 },
+      { name: "Kettlebell Swings", sets: 4, reps: 15 },
+      { name: "Mountain Climbers", sets: 4, reps: 30 },
+      { name: "Box Jumps", sets: 4, reps: 12 },
+      { name: "Battle Ropes", sets: 4, reps: 1 },
+    ],
   },
 ];

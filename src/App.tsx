@@ -14,7 +14,6 @@ import {
   WorkoutDay,
 } from "./types";
 import {
-  INITIAL_MESSAGES,
   INITIAL_DEVICES,
   LOCAL_STORAGE_KEYS,
   APP_TITLE,
@@ -22,7 +21,7 @@ import {
 } from "./constants/mockData";
 
 function App() {
-  const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [activeTab, setActiveTab] = useState<Tab>("home");
   const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
   const [selectedEnergyLevel, setSelectedEnergyLevel] =
@@ -79,11 +78,14 @@ function App() {
 
   const handleUpdateWorkout = (
     suggestion: WorkoutSuggestion,
-    energyLevel: EnergyLevel
+    energyLevel: EnergyLevel,
+    navigateToPlans: boolean = true
   ) => {
     setSelectedSuggestion(suggestion);
     setSelectedEnergyLevel(energyLevel);
-    handleNavigateToPlans();
+    if (navigateToPlans) {
+      handleNavigateToPlans();
+    }
   };
 
   const handleOnboardingComplete = () => {
